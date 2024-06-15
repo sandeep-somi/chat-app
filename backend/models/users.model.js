@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
       type: String,
       default: '',
   },
-})
+  // created_at, updated_at
+}, { timestamps: true });
 
 const Users = mongoose.model('Users', userSchema);
 
