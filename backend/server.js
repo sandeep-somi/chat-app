@@ -1,10 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.routes.js';
-import messagesRoutes from './routes/messages.routes.js';
-import conversationsRoutes from './routes/conversations.routes.js';
-import { connectToDB } from './db/connect.js';
 import cookieParser from 'cookie-parser';
+import { connectToDB } from './db/connect.js';
+
+import authRoutes from './routes/auth.routes.js';
+import usersRoutes from './routes/users.routes.js';
+import messagesRoutes from './routes/messages.routes.js';
+// import conversationsRoutes from './routes/conversations.routes.js';
+
 
 dotenv.config();
 
@@ -22,7 +25,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth/', authRoutes);
 app.use('/api/messages/', messagesRoutes);
-app.use('/api/conversations/', conversationsRoutes);
+// app.use('/api/conversations/', conversationsRoutes);
+app.use('/api/users/', usersRoutes);
 
 
 app.listen(PORT, () => {
