@@ -12,8 +12,7 @@ type TUserInfo = {
   user: TUser;
   is_active?: boolean;
   is_last?: boolean;
-  emoji?: string;
-  onSelect?: (id: string) => void;
+  onSelect?: (user: TUser) => void;
 };
 
 const UserInfo: React.FC<TUserInfo> = ({
@@ -23,7 +22,6 @@ const UserInfo: React.FC<TUserInfo> = ({
   user = null,
   is_active = false,
   is_last = false,
-  emoji = '',
   onSelect = () => null,
 }) => {
   const visibility = (is_user_info || is_header);
@@ -45,10 +43,10 @@ const UserInfo: React.FC<TUserInfo> = ({
         className={classNames("flex gap-2 items-center  p-2 py-1 select-none", {
           'hover:cursor-pointer hover:bg-slate-600 h-12': !visibility,
           'mx-2 my-2': is_header,
-          'active': is_active,
+          'bg-sky-500': is_active,
         })}
         onClick={() => {
-          if (user?.id) onSelect?.(user.id);
+          if (user?.id) onSelect?.(user);
         }}
       >
         <div className={classNames("avatar", {
@@ -67,7 +65,7 @@ const UserInfo: React.FC<TUserInfo> = ({
               {should_show_recent && <span className="text-sm text-slate-400">hello there...</span>}
             </div>
 
-            {(!visibility && emoji) && <span className="text-xl">{emoji}</span>}
+            {(!visibility && user?.emoji) && <span className="text-xl">{user?.emoji}</span>}
             {is_user_info && <div className="dropdown dropdown-bottom dropdown-end">
               <div tabIndex={0} role="button"><IoMdMore className="w-6 h-6 outline-none hover:cursor-pointer" /></div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-sm w-52">

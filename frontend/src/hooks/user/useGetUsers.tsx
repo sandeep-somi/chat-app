@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { getRandomEmoji } from "../../utils/emoji";
 
 const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
@@ -25,9 +26,15 @@ const useGetUsers = () => {
         throw new Error(data.error);
       }
       setLoading(false);
-      console.log(data);
-      setUsers(data);
-      return data;
+      const _data = data.map(user => {
+        return {
+          ...user,
+          emoji: getRandomEmoji()
+        }
+      })
+      console.log(_data);
+      setUsers(_data);
+      return _data;
     } catch (error) {
       toast.error(error.message);
       setLoading(false);

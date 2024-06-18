@@ -4,4 +4,5 @@ export type TUser = {
   full_name: string;
   avatar: string;
   gender: string;
+  emoji?: string;
 }

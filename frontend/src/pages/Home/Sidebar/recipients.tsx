@@ -1,5 +1,5 @@
 import useGetUsers from "../../../hooks/user/useGetUsers";
-import { getRandomEmoji } from "../../../utils/emoji";
+import { TUser } from "../../../types/user";
 import useConversation from "../../../zustand/useConversation";
 import UserInfo from "./user-info"
 
@@ -7,16 +7,16 @@ const Recipients = () => {
   const { users, loading } = useGetUsers();
   const { selected_conversation, setSelectedConversation } = useConversation();
 
-  const onSelect = (id: string) => {
-    console.log(id, 'on select');
-    setSelectedConversation(id);
+  const onSelect = (user: TUser) => {
+    if (selected_conversation?.id === user?.id) return;
+    setSelectedConversation(user);
   }
 
   return (
     <div className="py-2 flex flex-col overflow-auto">
       {loading && <span className="loading loading-spinner"></span>}
       {!loading && users.length ? users.map((user, index) => {
-        const is_active = selected_conversation === user.id;
+        const is_active = selected_conversation?.id === user.id;
 
         return (
           <UserInfo
@@ -24,8 +24,7 @@ const Recipients = () => {
             user={user}
             is_last={index === users.length - 1}
             is_active={is_active}
-            emoji={getRandomEmoji()}
-            onSelect={(id) => onSelect(id)}
+            onSelect={(user) => onSelect(user)}
           />
         )
       }) : null}

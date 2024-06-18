@@ -1,10 +1,13 @@
+import useConversation from "../../../zustand/useConversation"
 import Messages from "../Messages"
 import UserInfo from "../Sidebar/user-info"
 
 const MessageContainer = () => {
+  const { selected_conversation = null } = useConversation();
+
   return (
     <>
-      <UserInfo is_header />
+      {selected_conversation?.id && <UserInfo is_header user={selected_conversation} />}
       <Messages />
     </>
   )
