@@ -3,21 +3,21 @@ import Message from "./message"
 import { TiMessages } from "react-icons/ti";
 import useConversation from "../../../zustand/useConversation";
 import { useAuthContext } from "../../../context/auth-context";
+import useGetMessages from "../../../hooks/messages/useGetMessages";
 
 const Messages = () => {
   const { selected_conversation } = useConversation();
-  console.log(selected_conversation);
+  const { messages, loading } = useGetMessages();
+  console.log(messages);
   if (!selected_conversation?.id) return <ChatPlaceholder />;
 
   return (
     <>
       <div className="px-4 flex-1 overflow-auto">
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+        {loading && <span className="loading loading-spinner"></span>}
+        {!loading && messages.length? messages.map((message) => {
+          return <Message key={message.id} message={message} sender={selected_conversation} />
+        }) : <div className="bg-white text-slate-800 p-4 rounded-md">Send a message to start the conversation!</div>}
       </div>
       <form action="" className="px-4 my-3">
         <div className="w-full relative">

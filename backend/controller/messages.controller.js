@@ -50,7 +50,14 @@ export const get = async (req, res) => {
     }).populate("messages");
 
     if (!conversation) return res.status(200).json([]);
-    const messages = conversation.messages;
+    const messages = conversation.messages.map(({ createdAt, sender_id: s_id, receiver_id: r_id, message, _id }) => ({
+      id: _id,
+      created_at: createdAt,
+      sender_id: s_id,
+      receiver_id: r_id,
+      message,
+      is_sender: s_id === sender_id,
+    }));
 
     res.status(200).json(messages);
   } catch ({ message }) {

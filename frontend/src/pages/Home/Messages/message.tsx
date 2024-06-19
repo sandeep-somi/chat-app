@@ -1,15 +1,27 @@
+import classNames from "classnames";
+import { TMessage } from "../../../types/messages";
+import { TUser } from "../../../types/user";
 
-const Message = () => {
+type TMessages = {
+  message: TMessage;
+  sender: TUser;
+};
+
+const Message: React.FC<TMessages> = ({ message, sender }) => {
+  console.log(sender);
   return (
-    <div className="chat chat-end">
+    <div className={classNames("chat", {
+      'chat-end': message.is_sender,
+      'chat-start': !message.is_sender
+    })}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <img alt="Tailwind CSS chat bubble component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+          <img alt="Tailwind CSS chat bubble component" src={sender?.avatar} />
         </div>
       </div>
-      <div className="chat-bubble text-white bg-blue-500">It was said that you would, destroy the Sith, not join them.</div>
+      <div className="chat-bubble text-white bg-blue-500">{message.message || ''}</div>
       <div className="chat-footer opacity-50 text-xs flex gap-1 items-center text-emerald-200 mt-1">
-        12:30 AM
+        {message.created_at}
       </div>
     </div>
   )
