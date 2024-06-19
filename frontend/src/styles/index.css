@@ -31,3 +31,11 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #bebebe;
 }
+
+.messages-container {
+  height: calc(100vh - 8.2rem);
+}
+
+.recipents-container {
+  height: calc(100vh - 8.4rem);
+}

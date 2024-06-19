@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { TMessage } from "../../../types/messages";
 import { TUser } from "../../../types/user";
+import { useAuthContext } from "../../../context/auth-context";
 
 type TMessages = {
   message: TMessage;
@@ -8,15 +9,17 @@ type TMessages = {
 };
 
 const Message: React.FC<TMessages> = ({ message, sender }) => {
-  console.log(sender);
+  const { auth_user } = useAuthContext();
+  const avatar = message.is_sender ? sender.avatar : auth_user.avatar;
+
   return (
     <div className={classNames("chat", {
-      'chat-end': message.is_sender,
-      'chat-start': !message.is_sender
+      'chat-end': !message.is_sender,
+      'chat-start': message.is_sender
     })}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <img alt="Tailwind CSS chat bubble component" src={sender?.avatar} />
+          <img alt="Tailwind CSS chat bubble component" src={avatar} />
         </div>
       </div>
       <div className="chat-bubble text-white bg-blue-500">{message.message || ''}</div>

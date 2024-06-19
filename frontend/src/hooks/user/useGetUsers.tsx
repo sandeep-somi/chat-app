@@ -32,7 +32,7 @@ const useGetUsers = () => {
           emoji: getRandomEmoji()
         }
       })
-      console.log(_data);
+      
       setUsers(_data);
       return _data;
     } catch (error) {

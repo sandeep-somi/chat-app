@@ -13,7 +13,7 @@ const Recipients = () => {
   }
 
   return (
-    <div className="py-2 flex flex-col overflow-auto">
+    <div className="py-2 flex flex-col overflow-auto recipents-container">
       {loading && <span className="loading loading-spinner"></span>}
       {!loading && users.length ? users.map((user, index) => {
         const is_active = selected_conversation?.id === user.id;
