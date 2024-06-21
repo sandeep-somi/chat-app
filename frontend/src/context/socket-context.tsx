@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth_user?.id) {
-      const _socket = io(import?.meta?.env?.VITE_SERVER_URI || 'https://chat-app-t8cb.onrender.com/', {
+      const _socket = io(import.meta?.env?.VITE_SERVER_URI || 'https://chat-app-t8cb.onrender.com/', {
         query: {
           user_id: auth_user?.id,
         }
@@ -27,7 +27,9 @@ export const SocketContextProvider = ({ children }) => {
         setOnlineUsers(users);
       })
 
-      return () => _socket.close();
+      return () => {
+        _socket.close();
+      }
     } else {
       if (socket) {
         socket?.close();
