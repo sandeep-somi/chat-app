@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth_user?.id) {
-      const _socket = io(import.meta?.env?.VITE_SERVER_URI || 'https://chat-app-t8cb.onrender.com/', {
+      const _socket = io('https://chat-app-t8cb.onrender.com/', {
         query: {
           user_id: auth_user?.id,
         }
