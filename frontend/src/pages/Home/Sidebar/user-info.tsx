@@ -13,6 +13,7 @@ type TUserInfo = {
   is_active?: boolean;
   is_last?: boolean;
   onSelect?: (user: TUser) => void;
+  is_online?: boolean;
 };
 
 const UserInfo: React.FC<TUserInfo> = ({
@@ -23,6 +24,7 @@ const UserInfo: React.FC<TUserInfo> = ({
   is_active = false,
   is_last = false,
   onSelect = () => null,
+  is_online = false,
 }) => {
   const visibility = (is_user_info || is_header);
   const { setAuthUser } = useAuthContext();
@@ -50,8 +52,8 @@ const UserInfo: React.FC<TUserInfo> = ({
         }}
       >
         <div className={classNames("avatar", {
-          online: !visibility,
-          offline: !visibility
+          online: visibility ? false : is_online,
+          offline: visibility ? false : !is_online
         })}>
           <div className="w-8 rounded-full">
             <img src={avatar} />
@@ -69,14 +71,14 @@ const UserInfo: React.FC<TUserInfo> = ({
             {is_user_info && <div className="dropdown dropdown-bottom dropdown-end">
               <div tabIndex={0} role="button"><IoMdMore className="w-6 h-6 outline-none hover:cursor-pointer" /></div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-sm w-52">
-                <li><a onClick={onClickLogout}><IoLogOut className="w-6 h-6" /> Logout</a></li>
-                <li><a><IoIosSettings className="w-6 h-6" /> Settings</a></li>
+                <li><a><IoIosSettings className="w-6 h-6 mr-2" />Settings</a></li>
+                <li><a onClick={onClickLogout}><IoLogOut className="w-6 h-6 mr-2" />Logout</a></li>
               </ul>
             </div>}
           </div>
         </div>
       </div>
-      {!is_last && <div className="divider my-0 py-0 h-1"></div>}
+      {!is_last && <div className="divider my-0 py-0 h-px"></div>}
     </>
   )
 }

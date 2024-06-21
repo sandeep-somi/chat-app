@@ -4,27 +4,34 @@ import { TiMessages } from "react-icons/ti";
 import useConversation from "../../../zustand/useConversation";
 import { useAuthContext } from "../../../context/auth-context";
 import useGetMessages from "../../../hooks/messages/useGetMessages";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import useSendMessage from "../../../hooks/messages/useSendMessage";
+import { TMessage } from "../../../types/messages";
+import useListenMessages from "../../../hooks/messages/useListenMessages";
 
 const Messages = () => {
+  const [input, setInput] = useState('');
+  const inputRef = useRef(null);
+
   const { selected_conversation, messages, setMessages } = useConversation();
   const { loading } = useGetMessages();
-  const [input, setInput] = useState('');
   const { send, loading: send_loading } = useSendMessage();
+  useListenMessages();
+  
 
   useEffect(() => {
     if (!messages?.length) return;
     setTimeout(() => {
       scrollToBottom();
+      inputRef.current?.focus();
     }, 0);
-    
   }, [messages.length])
   
   if (!selected_conversation?.id) return <ChatPlaceholder />;
 
   const onSubmit = async (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
+    if (!input.trim()) return;
     const message = await send({
       receiver_id: selected_conversation.id,
       message: input,
@@ -44,15 +51,17 @@ const Messages = () => {
 
   return (
     <>
-      <div id="messages-container" className="px-4 flex-1 overflow-auto messages-container">
-        {loading && <span className="loading loading-spinner"></span>}
-        {!loading && messages.length? messages.map((message) => {
+      <div id="messages-container" className="px-4 flex-1 overflow-auto messages-container relative">
+        {loading && <span className="loading loading-spinner absolute left-1/2 top-1/2"></span>}
+        {(!loading && messages.length)? messages.map((message: TMessage) => {
           return <Message key={message.id} message={message} sender={selected_conversation} />
-        }) : <div className="bg-white text-slate-800 p-4 rounded-md">Send a message to start the conversation!</div>}
+        }) : null}
+        {!loading && !messages.length && <div className="text-white opacity-70 select-none text-center p-4 rounded-md">Send a message to start the conversation</div>}
       </div>
       <form action="" className="px-4 my-3" onSubmit={onSubmit}>
         <div className="w-full relative">
           <input
+            ref={inputRef}
             type="text"
             className="input input-bordered text-sm rounded-full block w-full p-2/5 bg-gray-700 border-gray-600 text-white"
             placeholder="type..."
@@ -60,9 +69,9 @@ const Messages = () => {
             onChange={(e) => setInput(e.target.value)}
             disabled={send_loading}
           />
-          <button type="submit" className="absolute inset-y-0 end-0 flex items-center pe-3" disabled={send_loading}>
+          {input && <button type="submit" className="btn btn-circle text-white absolute right-0 top-0 bg-sky-500" disabled={send_loading}>
             <BsSend className="w-4 h-4 text-white"/>
-          </button>
+          </button>}
         </div>
       </form>
     </>

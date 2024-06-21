@@ -13,8 +13,11 @@ const login = () => {
   const onSubmit = async (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
     const data = await login({ user_name, password });
-    localStorage.setItem('chat-user', JSON.stringify(data));
-    setAuthUser(data);
+
+    if (data?.id) {
+      localStorage.setItem('chat-user', JSON.stringify(data));
+      setAuthUser(data);
+    }
   }
 
   return (

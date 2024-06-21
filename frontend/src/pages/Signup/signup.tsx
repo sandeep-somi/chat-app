@@ -22,8 +22,11 @@ const Signup = () => {
       confirm_password,
       gender,
     });
-    localStorage.setItem('chat-user', JSON.stringify(data));
-    setAuthUser(data);
+
+    if(data?.id) {
+      localStorage.setItem('chat-user', JSON.stringify(data));
+      setAuthUser(data);
+    }
   }
 
   return (

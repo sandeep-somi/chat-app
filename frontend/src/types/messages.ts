@@ -5,4 +5,5 @@ export type TMessage = {
   id: string;
   created_at: string;
   is_sender: boolean;
+  should_shake?: boolean;
 }

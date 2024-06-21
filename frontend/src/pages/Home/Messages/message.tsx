@@ -26,7 +26,8 @@ const Message: React.FC<TMessages> = ({ message, sender }) => {
       </div>
       <div className={classNames("chat-bubble text-white", {
         'bg-blue-500': !message.is_sender,
-        'bg-slate-500': message.is_sender
+        'bg-slate-500': message.is_sender,
+        'shake': message?.should_shake
       })}>{message.message || ''}</div>
       <div className="chat-footer opacity-50 text-xs flex gap-1 items-center text-emerald-200 mt-1">
         {time}
